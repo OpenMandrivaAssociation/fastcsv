@@ -1,5 +1,5 @@
 Name:		fastcsv
-Version:	4.1.0
+Version:	4.4.1
 Release:	1
 Summary:	CSV parser and writer for Java
 Group:		Development/Java
@@ -13,10 +13,13 @@ BuildRequires:	sysjar
 BuildRequires:	javapackages-filesystem
 
 %description
-FastCSV %{version} is the CSV library JUnit Jupiter params 6.0.3 compiles
-against. Upstream shades it into junit-jupiter-params. This package keeps
-the library separate so that jar can require it instead of bundling a copy.
-The sources are Java 17 and have no dependencies.
+FastCSV %{version} is the CSV library JUnit Jupiter params 6.0.3 calls.
+The builder methods that jar uses are still present. 4.4.1 escapes
+control characters in parser exceptions and keeps a trailing escape
+quote in an unclosed field. 4.3 and 4.4 fix indexed reads, BOM
+detection on short streams, and stale CR state in the strict parser.
+Upstream shades a copy into junit-jupiter-params. This package keeps
+the library separate. The sources are Java 17 and have no dependencies.
 
 %prep
 %autosetup -n FastCSV-%{version} -p1
@@ -32,7 +35,7 @@ set -eo pipefail
 export JAVA_HOME=%{_jvmdir}/java-openjdk
 export PATH="$JAVA_HOME/bin:$PATH"
 find lib/src/main/java -name '*.java' ! -name 'module-info.java' > sources.list
-test "$(wc -l < sources.list)" -eq 44
+test "$(wc -l < sources.list)" -eq 47
 mkdir -p classes
 javac --release 17 -encoding UTF-8 -Xlint:-options,-removal -proc:none \
 	-d classes @sources.list
